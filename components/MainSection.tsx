@@ -27,7 +27,12 @@ const MainSection = () => {
         const worksheet = workbook.Sheets[sheetName];
         const jsonData = XLSX.utils.sheet_to_json(worksheet);
 
-        setData(jsonData as any[]);
+        const updatedData = (jsonData as any[]).map((item) => ({
+          ...item,
+          selectedTags: [],
+        }));
+
+        setData(updatedData);
         setLoading(false);
       };
 
@@ -40,6 +45,21 @@ const MainSection = () => {
     setData([]);
     setLoading(false);
     setCurrentPage(1);
+  };
+
+  const handleTagChange = (index: number, selectedTag: string) => {
+    setData((prevData) =>
+      prevData.map((item, i) =>
+        i === index
+          ? {
+              ...item,
+              selectedTags: item.selectedTags.includes(selectedTag)
+                ? item.selectedTags.filter((tag: string) => tag !== selectedTag)
+                : [...item.selectedTags, selectedTag],
+            }
+          : item
+      )
+    );
   };
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -97,6 +117,8 @@ const MainSection = () => {
                 <th className="py-2 px-4 border-b">ID</th>
                 <th className="py-2 px-4 border-b">Links</th>
                 <th className="py-2 px-4 border-b">Prefix</th>
+                <th className="py-2 px-4 border-b">Select Tags</th>
+                <th className="py-2 px-4 border-b">Selected Tags</th>
               </tr>
             </thead>
             <tbody>
@@ -105,6 +127,22 @@ const MainSection = () => {
                   <td className="py-2 px-4 border-b">{item.id}</td>
                   <td className="py-2 px-4 border-b">{item.links}</td>
                   <td className="py-2 px-4 border-b">{item.prefix}</td>
+                  <td className="py-2 px-4 border-b">
+                    <select
+                      className="bg-gray-800 text-white"
+                      onChange={(e) => handleTagChange(index, e.target.value)}
+                    >
+                      <option value="">Select a tag</option>
+                      <option value="Tag 1">Tag 1</option>
+                      <option value="Tag 2">Tag 2</option>
+                      <option value="Tag 3">Tag 3</option>
+                      <option value="Tag 4">Tag 4</option>
+                      <option value="Tag 5">Tag 5</option>
+                    </select>
+                  </td>
+                  <td className="py-2 px-4 border-b">
+                    {item.selectedTags.join(", ")}
+                  </td>
                 </tr>
               ))}
             </tbody>
