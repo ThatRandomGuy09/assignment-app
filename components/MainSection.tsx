@@ -74,11 +74,27 @@ const MainSection = () => {
   return (
     <div className="flex flex-col items-center justify-center w-full h-screen bg-gray-800 text-white">
       <div className="w-96 h-56 border-2 border-dashed border-gray-600 rounded-lg flex flex-col items-center justify-center relative">
+        <div className="absolute top-2">
+          <svg
+            className="w-8 h-8 text-green-500"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M4 3H3v18h1V3zM6 3h12v18H6V3zm2 0v18h8V3H8z"
+            />
+          </svg>
+        </div>
         {file ? (
           <div className="flex flex-col items-center">
-            <p>{file.name}</p>
+            <p className="mt-10">{file.name}</p>
             <button
-              className="text-red-500 hover:text-red-700 mt-2"
+              className="text-[#D33030] hover:text-red-700 mt-2"
               onClick={handleRemove}
             >
               Remove
@@ -140,8 +156,15 @@ const MainSection = () => {
                       <option value="Tag 5">Tag 5</option>
                     </select>
                   </td>
-                  <td className="py-2 px-4 border-b">
-                    {item.selectedTags.join(", ")}
+                  <td className="py-2 px-4 border-b flex gap-2 flex-wrap">
+                    {item.selectedTags.map((tag: string, i: number) => (
+                      <span
+                        key={i}
+                        className="bg-[#346BD4] text-white px-2 py-1 rounded-full text-sm"
+                      >
+                        {tag}
+                      </span>
+                    ))}
                   </td>
                 </tr>
               ))}
