@@ -1,7 +1,24 @@
+"use client";
 import Image from "next/image";
 import { ModeToggle } from "./toggle-mode";
+import { useRouter } from "next/navigation";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { auth } from "../config/firebase";
 
 export default function LoginPage() {
+  const router = useRouter();
+
+  const handleGoogleSignIn = async () => {
+    const provider = new GoogleAuthProvider();
+
+    try {
+      const result = await signInWithPopup(auth, provider);
+
+      router.push("/");
+    } catch (error) {
+      console.error("Google sign-in error:", error);
+    }
+  };
   return (
     <div className="flex min-h-screen flex-col md:flex-row">
       <div className="hidden md:flex flex-1 bg-blue-600 justify-center items-center p-6">
@@ -52,7 +69,10 @@ export default function LoginPage() {
             Sign in to your account
           </h4>
           <div className="flex">
-            <button className="w-full mb-4 py-2 bg-gray-700 text-gray-300 font-semibold rounded-lg flex items-center justify-center">
+            <button
+              onClick={handleGoogleSignIn}
+              className="w-full mb-4 py-2 bg-gray-700 text-gray-300 font-semibold rounded-lg flex items-center justify-center"
+            >
               <Image
                 src="/google.png"
                 alt="Google"
