@@ -4,9 +4,15 @@ import { ModeToggle } from "./toggle-mode";
 import { useRouter } from "next/navigation";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../config/firebase";
+import { useState } from "react";
 
 export default function LoginPage() {
   const router = useRouter();
+  const defaultEmail = "demo@example.com";
+  const defaultPassword = "password123";
+
+  const [email, setEmail] = useState(defaultEmail);
+  const [password, setPassword] = useState(defaultPassword);
 
   const handleGoogleSignIn = async () => {
     const provider = new GoogleAuthProvider();
@@ -17,6 +23,17 @@ export default function LoginPage() {
       router.push("/");
     } catch (error) {
       console.error("Google sign-in error:", error);
+    }
+  };
+
+  const handleSignIn = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    
+    if (email === defaultEmail && password === defaultPassword) {
+      router.push("/");
+    } else {
+      console.error("Invalid email or password");
     }
   };
   return (
@@ -93,7 +110,7 @@ export default function LoginPage() {
               Sign in with Apple
             </button>
           </div>
-          <form>
+          <form onSubmit={handleSignIn}>
             <div className="mb-6">
               <label
                 className="block text-gray-400 mb-2 font-bold"
@@ -106,6 +123,8 @@ export default function LoginPage() {
                 id="email"
                 className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700"
                 placeholder="johndoe@gmail.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div className="mb-6">
@@ -120,6 +139,8 @@ export default function LoginPage() {
                 id="password"
                 className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700"
                 placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
               <a
                 href="#"
