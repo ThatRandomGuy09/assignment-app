@@ -1,9 +1,13 @@
 "use client";
 import { useState } from "react";
+import * as XLSX from "xlsx";
 
 const MainSection = () => {
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [data, setData] = useState<any[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const itemsPerPage = 10;
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -14,16 +18,38 @@ const MainSection = () => {
   const handleUpload = () => {
     if (file) {
       setLoading(true);
+      const reader = new FileReader();
 
-      setTimeout(() => {
-        console.log("Uploading:", file.name);
-      }, 2000);
+      reader.onload = (event) => {
+        const data = new Uint8Array(event.target!.result as ArrayBuffer);
+        const workbook = XLSX.read(data, { type: "array" });
+        const sheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[sheetName];
+        const jsonData = XLSX.utils.sheet_to_json(worksheet);
+
+        setData(jsonData as any[]);
+        setLoading(false);
+      };
+
+      reader.readAsArrayBuffer(file);
     }
   };
 
   const handleRemove = () => {
     setFile(null);
+    setData([]);
     setLoading(false);
+    setCurrentPage(1);
+  };
+
+  // Calculate pagination
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(data.length / itemsPerPage);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
   };
 
   return (
@@ -59,11 +85,52 @@ const MainSection = () => {
         disabled={loading}
       >
         {loading ? (
-          <div className="w-5 h-5 border-4 border-white border-t-[#346BD4] border-solid rounded-lg animate-spin"></div>
+          <div className="w-5 h-5 border-4 border-white border-t-[#346BD4] border-solid rounded-full animate-spin"></div>
         ) : (
           "Upload"
         )}
       </button>
+      {data.length > 0 && (
+        <div className="mt-6 w-96 overflow-x-auto">
+          <table className="min-w-full bg-gray-900 text-white">
+            <thead>
+              <tr>
+                <th className="py-2 px-4 border-b">ID</th>
+                <th className="py-2 px-4 border-b">Links</th>
+                <th className="py-2 px-4 border-b">Prefix</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentItems.map((item, index) => (
+                <tr key={index}>
+                  <td className="py-2 px-4 border-b">{item.id}</td>
+                  <td className="py-2 px-4 border-b">{item.links}</td>
+                  <td className="py-2 px-4 border-b">{item.prefix}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <div className="mt-4 flex justify-between">
+            <button
+              className="bg-[#346BD4] text-white py-1 px-2 rounded"
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              Previous
+            </button>
+            <span className="text-white">
+              Page {currentPage} of {totalPages}
+            </span>
+            <button
+              className="bg-[#346BD4] text-white py-1 px-2 rounded"
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
