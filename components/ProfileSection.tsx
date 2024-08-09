@@ -1,18 +1,28 @@
-import Image from "next/image";
 import { FiBell } from "react-icons/fi";
+import Image from "next/image";
 import profilePicc from "../public/profilepicc.png";
 
 const ProfileSection = () => {
   return (
-    <div className="flex items-center justify-between absolute top-4 right-4 w-full max-w-screen-lg px-4">
-      <h1 className="text-white text-lg font-bold">Upload CSV</h1>
-      <div className="flex items-center space-x-4">
-        <FiBell className="text-2xl text-white" />
-        <Image
-          src={profilePicc}
-          alt="Profile Picture"
-          className="w-10 h-10 rounded-lg object-cover"
-        />
+    <div className="flex justify-between items-center p-4">
+      <h1 className="text-white text-lg font-bold ml-52">Upload CSV</h1>
+      <div className="flex items-center space-x-6">
+        <div className="relative">
+          <FiBell className="text-gray-600 text-2xl cursor-pointer" />
+          <span className="absolute top-0 right-0 inline-block w-2 h-2 bg-red-600 rounded-full"></span>
+        </div>
+        <div className="flex items-center space-x-4">
+          <Image
+            src={profilePicc}
+            width={40}
+            height={40}
+            alt="Profile"
+            className="rounded-full"
+          />
+          <div className="text-gray-800 font-nunito">
+            <p className="font-semibold">User Name</p>
+          </div>
+        </div>
       </div>
     </div>
   );
