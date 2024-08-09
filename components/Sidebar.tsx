@@ -20,7 +20,7 @@ const Sidebar = () => {
   return (
     <div
       className={`flex flex-col justify-between ${
-        isOpen ? "w-64" : "w-20"
+        isOpen ? "w-72" : "w-20" // Increased sidebar width
       } duration-300 bg-gray-900 h-screen p-5 pt-8 relative`}
     >
       <div>
@@ -48,9 +48,9 @@ const Sidebar = () => {
         </div>
         <ul className="pt-6 flex-grow">
           <li
-            className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-4 ${
+            className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-8 ${
               activeSection === "Dashboard" && "bg-[#346BD4]"
-            } font-nunito`}
+            } font-nunito mb-4`}  // Increased bottom margin for spacing
             onClick={() => setActiveSection("Dashboard")}
           >
             <FiHome className="text-2xl" />
@@ -59,18 +59,18 @@ const Sidebar = () => {
             )}
           </li>
           <li
-            className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-4 ${
+            className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-8 ${
               activeSection === "Upload" && "bg-[#346BD4]"
-            } font-nunito`}
+            } font-nunito mb-4`}  // Increased bottom margin for spacing
             onClick={() => setActiveSection("Upload")}
           >
             <FiUpload className="text-2xl" />
             {isOpen && <span className="origin-left duration-200">Upload</span>}
           </li>
           <li
-            className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-4 ${
+            className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-8 ${
               activeSection === "Invoice" && "bg-[#346BD4]"
-            } font-nunito`}
+            } font-nunito mb-4`}  // Increased bottom margin for spacing
             onClick={() => setActiveSection("Invoice")}
           >
             <FiFileText className="text-2xl" />
@@ -79,9 +79,9 @@ const Sidebar = () => {
             )}
           </li>
           <li
-            className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-4 ${
+            className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-8 ${
               activeSection === "Schedule" && "bg-[#346BD4]"
-            } font-nunito`}
+            } font-nunito mb-4`}  // Increased bottom margin for spacing
             onClick={() => setActiveSection("Schedule")}
           >
             <FiCalendar className="text-2xl" />
@@ -90,9 +90,20 @@ const Sidebar = () => {
             )}
           </li>
           <li
-            className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-4 ${
+            className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-8 ${
+              activeSection === "Calendar" && "bg-[#346BD4]"
+            } font-nunito mb-4`}  // Increased bottom margin for spacing
+            onClick={() => setActiveSection("Calendar")}
+          >
+            <FiCalendar className="text-2xl" />
+            {isOpen && (
+              <span className="origin-left duration-200">Calendar</span>
+            )}
+          </li>
+          <li
+            className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-8 ${
               activeSection === "Notifications" && "bg-[#346BD4]"
-            } font-nunito`}
+            } font-nunito mb-4`}  // Increased bottom margin for spacing
             onClick={() => setActiveSection("Notifications")}
           >
             <FiBell className="text-2xl" />
@@ -101,9 +112,9 @@ const Sidebar = () => {
             )}
           </li>
           <li
-            className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-4 ${
+            className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-8 ${
               activeSection === "Settings" && "bg-[#346BD4]"
-            } font-nunito`}
+            } font-nunito`}  // Removed margin-bottom for last item
             onClick={() => setActiveSection("Settings")}
           >
             <FiSettings className="text-2xl" />
