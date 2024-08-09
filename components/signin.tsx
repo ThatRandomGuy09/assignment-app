@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../config/firebase";
 import { useState } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -20,20 +21,20 @@ export default function LoginPage() {
     try {
       const result = await signInWithPopup(auth, provider);
 
-      router.push("/");
+      router.push("/dashboard");
     } catch (error) {
       console.error("Google sign-in error:", error);
     }
   };
 
-  const handleSignIn = (e: React.FormEvent) => {
+  const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    
-    if (email === defaultEmail && password === defaultPassword) {
-      router.push("/");
-    } else {
-      console.error("Invalid email or password");
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      router.push("/dashboard");
+    } catch (error) {
+      console.error("Default sign-in error:", error);
     }
   };
   return (
