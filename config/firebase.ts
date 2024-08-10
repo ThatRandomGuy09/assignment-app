@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
-import { getAnalytics, isSupported } from "firebase/analytics";
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { getAnalytics } from "firebase/analytics";
+import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -16,12 +16,3 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 export const auth = getAuth(app);
 
-async function initializeAnalytics() {
-  if (await isSupported()) {
-    return getAnalytics(app);
-  } else {
-    console.warn("Firebase Analytics is not supported in this environment.");
-  }
-}
-
-initializeAnalytics();
