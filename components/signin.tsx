@@ -20,7 +20,6 @@ export default function LoginPage() {
 
     try {
       const result = await signInWithPopup(auth, provider);
-
       router.push("/dashboard");
     } catch (error) {
       console.error("Google sign-in error:", error);
@@ -37,20 +36,21 @@ export default function LoginPage() {
       console.error("Default sign-in error:", error);
     }
   };
+
   return (
     <div className="flex min-h-screen flex-col md:flex-row">
       <div className="hidden md:flex flex-1 bg-blue-600 justify-center items-center p-6">
         <div className="relative w-full h-full bg-[#605BFF] rounded-lg flex justify-center items-center">
           <div className="relative w-[80%] h-[80%] bg-[#B7E9F640] rounded-lg flex flex-col justify-center items-start">
-            <div className="absolute top-4 left-4 bg-white p-2 rounded-lg flex items-center">
+            <div className="absolute top-4 left-4">
+              
               <Image
-                src="/logoo.png"
-                alt="Logo"
-                width={40}
+                src="/logo.png" 
+                alt="Combined Logo"
+                width={90}
                 height={40}
-                className="mr-2"
+                className="rounded-lg"
               />
-              <span className="text-white font-bold font-montserrat">Base</span>
             </div>
 
             <div className="flex flex-col items-start mt-12 justify-center p-8">
@@ -75,7 +75,7 @@ export default function LoginPage() {
 
       <div className="flex-1 sm:flex-2 bg-gray-900 flex flex-col justify-center items-center md:w-3/4">
         {/* Header for Mobile */}
-        <div className="w-full bg-[#346BD4] mb-12  md:hidden flex items-center justify-center">
+        <div className="w-full bg-[#346BD4] mb-12 md:hidden flex items-center justify-center">
           <span className="text-white font-bold font-montserrat text-2xl">
             Base
           </span>
