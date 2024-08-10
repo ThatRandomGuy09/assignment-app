@@ -19,9 +19,6 @@ const ProfileSection = () => {
             alt="Profile"
             className="rounded-full"
           />
-          <div className="text-gray-800 font-nunito">
-            <p className="font-semibold">User Name</p>
-          </div>
         </div>
       </div>
     </div>
