@@ -1,6 +1,18 @@
-import Sidebar from "../../components/Sidebar";
-import MainSection from "../../components/MainSection";
-import ProfileSection from "../../components/ProfileSection";
+import dynamic from "next/dynamic";
+
+// Dynamically import components to only render on the client side
+const Sidebar = dynamic(() => import("../../components/Sidebar"), {
+  ssr: false,
+});
+const ProfileSection = dynamic(
+  () => import("../../components/ProfileSection"),
+  {
+    ssr: false,
+  }
+);
+const MainSection = dynamic(() => import("../../components/MainSection"), {
+  ssr: false,
+});
 
 const Dashboard = () => {
   return (
