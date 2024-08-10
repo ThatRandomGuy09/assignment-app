@@ -2,7 +2,6 @@
 import { useState } from "react";
 import {
   FiHome,
-  FiUpload,
   FiFileText,
   FiCalendar,
   FiBell,
@@ -11,7 +10,9 @@ import {
 import Image from "next/image";
 import logo from "../public/logoo.png";
 import menuIcon from "../public/hamburger.png";
+import uploadIcon from "../public/Chart.png";
 import { ModeToggle } from "./toggle-mode";
+
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
@@ -49,7 +50,8 @@ const Sidebar = () => {
         <ul className="pt-6 flex-grow">
           <li
             className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-8 ${
-              activeSection === "Dashboard" && "bg-[#346BD4]"
+              activeSection === "Dashboard" &&
+              "bg-gradient-to-r from-[rgba(172,169,255,0.91)] to-[rgba(172,169,255,0)]"
             } font-nunito mb-4`}
             onClick={() => setActiveSection("Dashboard")}
           >
@@ -60,16 +62,24 @@ const Sidebar = () => {
           </li>
           <li
             className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-8 ${
-              activeSection === "Upload" && "bg-[#346BD4]"
+              activeSection === "Upload" &&
+              "bg-gradient-to-r from-[rgba(172,169,255,0.91)] to-[rgba(172,169,255,0)]"
             } font-nunito mb-4`}
             onClick={() => setActiveSection("Upload")}
           >
-            <FiUpload className="text-2xl" />
-            {isOpen && <span className="origin-left duration-200">Upload</span>}
+            <Image
+              src={uploadIcon}
+              width={32}
+              height={32} 
+              alt="Upload"
+              className="text-2xl"
+            />
+            {isOpen && <span className="origin-left duration-200 text-blue-500">Upload</span>}
           </li>
           <li
             className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-8 ${
-              activeSection === "Invoice" && "bg-[#346BD4]"
+              activeSection === "Invoice" &&
+              "bg-gradient-to-r from-[rgba(172,169,255,0.91)] to-[rgba(172,169,255,0)]"
             } font-nunito mb-4`}
             onClick={() => setActiveSection("Invoice")}
           >
@@ -80,7 +90,8 @@ const Sidebar = () => {
           </li>
           <li
             className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-8 ${
-              activeSection === "Schedule" && "bg-[#346BD4]"
+              activeSection === "Schedule" &&
+              "bg-gradient-to-r from-[rgba(172,169,255,0.91)] to-[rgba(172,169,255,0)]"
             } font-nunito mb-4`}
             onClick={() => setActiveSection("Schedule")}
           >
@@ -91,7 +102,8 @@ const Sidebar = () => {
           </li>
           <li
             className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-8 ${
-              activeSection === "Calendar" && "bg-[#346BD4]"
+              activeSection === "Calendar" &&
+              "bg-gradient-to-r from-[rgba(172,169,255,0.91)] to-[rgba(172,169,255,0)]"
             } font-nunito mb-4`}
             onClick={() => setActiveSection("Calendar")}
           >
@@ -102,7 +114,8 @@ const Sidebar = () => {
           </li>
           <li
             className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-8 ${
-              activeSection === "Notifications" && "bg-[#346BD4]"
+              activeSection === "Notifications" &&
+              "bg-gradient-to-r from-[rgba(172,169,255,0.91)] to-[rgba(172,169,255,0)]"
             } font-nunito mb-4`}
             onClick={() => setActiveSection("Notifications")}
           >
@@ -113,7 +126,8 @@ const Sidebar = () => {
           </li>
           <li
             className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-8 ${
-              activeSection === "Settings" && "bg-[#346BD4]"
+              activeSection === "Settings" &&
+              "bg-gradient-to-r from-[rgba(172,169,255,0.91)] to-[rgba(172,169,255,0)]"
             } font-nunito`}
             onClick={() => setActiveSection("Settings")}
           >
