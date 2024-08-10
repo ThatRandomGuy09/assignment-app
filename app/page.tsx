@@ -1,4 +1,4 @@
-import LoginPage from "@/components/SignIn"
+import LoginPage from "../components/SignIn"
 import React from "react";
 
 type Props = {};
