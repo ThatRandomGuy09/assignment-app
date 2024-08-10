@@ -48,14 +48,31 @@ const MainSection = () => {
   };
 
   const handleTagChange = (index: number, selectedTag: string) => {
+    if (selectedTag === "") return; // Ignore the "Select tags" heading
+
     setData((prevData) =>
       prevData.map((item, i) =>
         i === index
           ? {
               ...item,
               selectedTags: item.selectedTags.includes(selectedTag)
-                ? item.selectedTags.filter((tag: string) => tag !== selectedTag)
+                ? item.selectedTags
                 : [...item.selectedTags, selectedTag],
+            }
+          : item
+      )
+    );
+  };
+
+  const handleRemoveTag = (index: number, tagToRemove: string) => {
+    setData((prevData) =>
+      prevData.map((item, i) =>
+        i === index
+          ? {
+              ...item,
+              selectedTags: item.selectedTags.filter(
+                (tag: string) => tag !== tagToRemove
+              ),
             }
           : item
       )
@@ -72,125 +89,135 @@ const MainSection = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center w-full h-screen bg-gray-800 text-white">
-      <div className="w-96 h-56 border-2 border-dashed border-gray-600 rounded-lg flex flex-col items-center justify-center relative">
-        <div className="absolute top-2">
-          <svg
-            className="w-8 h-8 text-green-500"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M4 3H3v18h1V3zM6 3h12v18H6V3zm2 0v18h8V3H8z"
-            />
-          </svg>
-        </div>
-        {file ? (
-          <div className="flex flex-col items-center">
-            <p className="mt-10">{file.name}</p>
-            <button
-              className="text-[#D33030] hover:text-red-700 mt-2"
-              onClick={handleRemove}
-            >
-              Remove
-            </button>
+    <div className="flex-grow flex flex-col items-center justify-center p-4 bg-gray-800 text-white overflow-x-auto">
+      <div className="w-full max-w-4xl">
+        <div className="flex justify-center mb-4">
+          <div className="w-full max-w-sm h-56 border-2 border-dashed border-gray-600 rounded-lg flex flex-col items-center justify-center relative">
+            {file ? (
+              <div className="flex flex-col items-center">
+                <p className="mt-10 text-center">{file.name}</p>
+                <button
+                  className="text-[#D33030] hover:text-red-700 mt-2"
+                  onClick={handleRemove}
+                >
+                  Remove
+                </button>
+              </div>
+            ) : (
+              <>
+                <span>Drop your excel sheet here or </span>
+                <label className="text-[#346BD4] ml-1 cursor-pointer">
+                  browse
+                  <input
+                    type="file"
+                    className="hidden"
+                    onChange={handleFileChange}
+                  />
+                </label>
+              </>
+            )}
           </div>
-        ) : (
-          <>
-            <span>Drop your excel sheet here or </span>
-            <label className="text-[#346BD4] ml-1 cursor-pointer">
-              browse
-              <input
-                type="file"
-                className="hidden"
-                onChange={handleFileChange}
-              />
-            </label>
-          </>
+        </div>
+        <div className="flex justify-center mb-4">
+          <button
+            className="w-full max-w-sm rounded-md bg-[#346BD4] hover:bg-blue-700 text-white font-bold py-2 px-4  relative"
+            onClick={handleUpload}
+            disabled={loading}
+          >
+            {loading ? (
+              <div className="w-5 h-5 border-4 border-white border-t-[#346BD4] border-solid rounded-full animate-spin"></div>
+            ) : (
+              "Upload"
+            )}
+          </button>
+        </div>
+        {data.length > 0 && (
+          <div className="overflow-x-auto">
+            <table className="min-w-full bg-gray-900 text-white">
+              <thead>
+                <tr>
+                  <th className="py-2 px-4 border-b">ID</th>
+                  <th className="py-2 px-4 border-b">Links</th>
+                  <th className="py-2 px-4 border-b">Prefix</th>
+                  <th className="py-2 px-4 border-b">Select Tags</th>
+                  <th className="py-2 px-4 border-b">Selected Tags</th>
+                </tr>
+              </thead>
+              <tbody>
+                {currentItems.map((item, index) => (
+                  <tr key={indexOfFirstItem + index}>
+                    <td className="py-2 px-4 border-b">{item.id}</td>
+                    <td className="py-2 px-4 border-b">{item.links}</td>
+                    <td className="py-2 px-4 border-b">{item.prefix}</td>
+                    <td className="py-2 px-4 border-b">
+                      <select
+                        className="bg-gray-800 text-white"
+                        onChange={(e) =>
+                          handleTagChange(
+                            indexOfFirstItem + index,
+                            e.target.value
+                          )
+                        }
+                        value=""
+                      >
+                        <option value="" disabled>
+                          Select tags
+                        </option>
+                        <option value="Tag 1">Tag 1</option>
+                        <option value="Tag 2">Tag 2</option>
+                        <option value="Tag 3">Tag 3</option>
+                        <option value="Tag 4">Tag 4</option>
+                        <option value="Tag 5">Tag 5</option>
+                      </select>
+                    </td>
+                    <td className="py-2 px-4 border-b flex gap-2 flex-wrap">
+                      {item.selectedTags.length > 0 ? (
+                        item.selectedTags.map((tag: string, i: number) => (
+                          <span
+                            key={i}
+                            className="bg-[#346BD4] text-white px-2 py-1 rounded-full text-sm flex items-center"
+                          >
+                            {tag}
+                            <button
+                              className="ml-2 text-red-500 hover:text-red-700"
+                              onClick={() =>
+                                handleRemoveTag(indexOfFirstItem + index, tag)
+                              }
+                            >
+                              &times;
+                            </button>
+                          </span>
+                        ))
+                      ) : (
+                        <span className="text-gray-500">No tags selected</span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div className="mt-4 flex justify-between">
+              <button
+                className="bg-[#346BD4] text-white py-1 px-2 rounded"
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+              >
+                Previous
+              </button>
+              <span className="text-white">
+                Page {currentPage} of {totalPages}
+              </span>
+              <button
+                className="bg-[#346BD4] text-white py-1 px-2 rounded"
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+              >
+                Next
+              </button>
+            </div>
+          </div>
         )}
       </div>
-      <button
-        className="bg-[#346BD4] hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 relative"
-        onClick={handleUpload}
-        disabled={loading}
-      >
-        {loading ? (
-          <div className="w-5 h-5 border-4 border-white border-t-[#346BD4] border-solid rounded-full animate-spin"></div>
-        ) : (
-          "Upload"
-        )}
-      </button>
-      {data.length > 0 && (
-        <div className="mt-6 w-96 overflow-x-auto">
-          <table className="min-w-full bg-gray-900 text-white">
-            <thead>
-              <tr>
-                <th className="py-2 px-4 border-b">ID</th>
-                <th className="py-2 px-4 border-b">Links</th>
-                <th className="py-2 px-4 border-b">Prefix</th>
-                <th className="py-2 px-4 border-b">Select Tags</th>
-                <th className="py-2 px-4 border-b">Selected Tags</th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentItems.map((item, index) => (
-                <tr key={index}>
-                  <td className="py-2 px-4 border-b">{item.id}</td>
-                  <td className="py-2 px-4 border-b">{item.links}</td>
-                  <td className="py-2 px-4 border-b">{item.prefix}</td>
-                  <td className="py-2 px-4 border-b">
-                    <select
-                      className="bg-gray-800 text-white"
-                      onChange={(e) => handleTagChange(index, e.target.value)}
-                    >
-                      <option value="">Select a tag</option>
-                      <option value="Tag 1">Tag 1</option>
-                      <option value="Tag 2">Tag 2</option>
-                      <option value="Tag 3">Tag 3</option>
-                      <option value="Tag 4">Tag 4</option>
-                      <option value="Tag 5">Tag 5</option>
-                    </select>
-                  </td>
-                  <td className="py-2 px-4 border-b flex gap-2 flex-wrap">
-                    {item.selectedTags.map((tag: string, i: number) => (
-                      <span
-                        key={i}
-                        className="bg-[#346BD4] text-white px-2 py-1 rounded-full text-sm"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <div className="mt-4 flex justify-between">
-            <button
-              className="bg-[#346BD4] text-white py-1 px-2 rounded"
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-            >
-              Previous
-            </button>
-            <span className="text-white">
-              Page {currentPage} of {totalPages}
-            </span>
-            <button
-              className="bg-[#346BD4] text-white py-1 px-2 rounded"
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}
-            >
-              Next
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
