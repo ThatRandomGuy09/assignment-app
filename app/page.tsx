@@ -1,9 +1,9 @@
-import LoginPage from "../components/SignIn"
+import LoginPage from "../components/Login"
 import React from "react";
 
 type Props = {};
 
-const Login = (props: Props) => {
+const IndexPage = (props: Props) => {
   return (
     <div>
       <LoginPage />
@@ -11,4 +11,4 @@ const Login = (props: Props) => {
   );
 };
 
-export default LoginPage;
+export default IndexPage;
